@@ -113,5 +113,34 @@ namespace PlantPlanner.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Water(int id)
+        {
+            var plant = await _context.Plants.FindAsync(id);
+
+            if (plant == null)
+            {
+                return NotFound();
+            }
+
+            var wateringLog = new WateringLog
+            {
+                PlantId = plant.Id,
+                WateredOn = DateTime.UtcNow
+            };
+
+            _context.WateringLogs.Add(wateringLog);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Plant successfully watered!";
+            return RedirectToAction(nameof(Index));
+        }
+
     }
+
+
+
 }
+

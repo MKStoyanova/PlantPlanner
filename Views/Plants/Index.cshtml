@@ -6,6 +6,13 @@
 
 <h1>Plants</h1>
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Add plant</a>
 </p>
@@ -18,7 +25,7 @@
             <th>Light</th>
             <th>Days until it needs water</th>
             <th>Location</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -33,9 +40,24 @@
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="WateringLogs"
+                       asp-action="Index"
+                       asp-route-plantId="@item.Id">
+                        History
+                    </a> |
+
+                    <form asp-action="Water"
+                          asp-route-id="@item.Id"
+                          method="post"
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-success">
+                            Watered today
+                        </button>
+                    </form>
                 </td>
             </tr>
+
         }
     </tbody>
 </table>

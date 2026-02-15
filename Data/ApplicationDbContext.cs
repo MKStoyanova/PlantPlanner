@@ -11,5 +11,8 @@ namespace PlantPlanner.Data
         }
 
         public DbSet<Plant> Plants { get; set; } = null!;
+
+        public DbSet<WateringLog> WateringLogs { get; set; } = null!;
+
     }
 }

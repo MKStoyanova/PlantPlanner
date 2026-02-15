@@ -4,7 +4,7 @@
     ViewData["Title"] = "Watering History";
 }
 
-<h2>Watering History</h2>
+<h2>Watering History for @ViewBag.PlantName</h2>
 
 <table class="table">
     <thead>
@@ -16,7 +16,9 @@
         @foreach (var log in Model)
         {
             <tr>
-                <td>@log.WateredOn</td>
+                
+                <td>@log.WateredOn.ToString("dd.MM.yyyy HH:mm")</td>
+
             </tr>
         }
     </tbody>
