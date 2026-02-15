@@ -1,54 +1,114 @@
 ﻿@model PlantPlanner.Models.Plant
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Plant";
 }
 
-<h1>Edit Plant</h1>
+<h1>Edit</h1>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+<h4>Plant</h4>
+<hr />
 
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Type</label>
+
+                <select class="form-select" id="typeSelect" name="Type">
+                    <option value="">-- Select Type --</option>
+                    <option value="Succulent">Succulent</option>
+                    <option value="Cactus">Cactus</option>
+                    <option value="Fern">Fern</option>
+                    <option value="Orchid">Orchid</option>
+                    <option value="Tropical">Tropical</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <input type="text"
+                       id="customType"
+                       class="form-control mt-2"
+                       placeholder="Enter custom type"
+                       style="display:none;" />
+
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Light" class="form-label"></label>
+                <input asp-for="Light" class="form-control" />
+                <span asp-validation-for="Light" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="WaterIntervalDays" class="form-label"></label>
+                <input asp-for="WaterIntervalDays" class="form-control" />
+                <span asp-validation-for="WaterIntervalDays" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label"></label>
+                <textarea asp-for="Notes" class="form-control"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Type" class="form-label"></label>
-        <input asp-for="Type" class="form-control" />
-        <span asp-validation-for="Type" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Light" class="form-label"></label>
-        <input asp-for="Light" class="form-control" />
-        <span asp-validation-for="Light" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="WaterIntervalDays" class="form-label"></label>
-        <input asp-for="WaterIntervalDays" class="form-control" type="number" min="1" max="365" step="1" />
-        <span asp-validation-for="WaterIntervalDays" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Location" class="form-label"></label>
-        <input asp-for="Location" class="form-control" />
-        <span asp-validation-for="Location" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Notes" class="form-label"></label>
-        <textarea asp-for="Notes" class="form-control"></textarea>
-        <span asp-validation-for="Notes" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const select = document.getElementById("typeSelect");
+        const custom = document.getElementById("customType");
+
+        const presets = ["", "Succulent", "Cactus", "Fern", "Orchid", "Tropical", "Other"];
+        const currentType = "@(Model.Type ?? "")";
+
+        
+        if (currentType && !presets.includes(currentType)) {
+            select.value = "Other";
+            custom.value = currentType;
+        } else {
+            select.value = currentType;
+        }
+
+        function toggle() {
+            const isOther = select.value === "Other";
+            custom.style.display = isOther ? "block" : "none";
+
+            if (isOther) {
+               
+                select.name = "Type__preset";
+                custom.name = "Type";
+            } else {
+                
+                select.name = "Type";
+                custom.name = "Type__custom";
+                custom.value = "";
+            }
+        }
+
+        select.addEventListener("change", toggle);
+        toggle();
+    </script>
 }

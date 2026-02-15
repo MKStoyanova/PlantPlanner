@@ -16,8 +16,26 @@
 
     <div class="mb-3">
         <label asp-for="Type" class="form-label"></label>
-        <input asp-for="Type" class="form-control" />
+
+        <select class="form-select" id="typeSelect" name="Type">
+            <option value="">-- Select Type --</option>
+            <option value="Succulent">Succulent</option>
+            <option value="Cactus">Cactus</option>
+            <option value="Fern">Fern</option>
+            <option value="Orchid">Orchid</option>
+            <option value="Tropical">Tropical</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <input type="text"
+               id="customType"
+               class="form-control mt-2"
+               placeholder="Enter custom type"
+               style="display:none;" />
+
+        <span asp-validation-for="Type" class="text-danger"></span>
     </div>
+
 
     <div class="mb-3">
         <label asp-for="Light" class="form-label"></label>
@@ -48,4 +66,30 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const select = document.getElementById("typeSelect");
+        const custom = document.getElementById("customType");
+
+        function toggle() {
+            const isOther = select.value === "Other";
+            custom.style.display = isOther ? "block" : "none";
+
+            if (isOther) {
+               
+                select.name = "Type__preset";
+                custom.name = "Type";
+            } else {
+               
+                select.name = "Type";
+                custom.name = "Type__custom";
+                custom.value = "";
+            }
+        }
+
+        select.addEventListener("change", toggle);
+        toggle();
+    </script>
 }
+
+
