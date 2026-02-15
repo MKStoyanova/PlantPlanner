@@ -1,8 +1,52 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="p-5 mb-4 bg-light rounded-3 border">
+        <div class="container-fluid py-4">
+            <h1 class="display-6 fw-bold">PlantPlanner</h1>
+            <p class="col-md-8 fs-5">
+                Track your plants, log watering, and keep a simple history so you never forget who needs water.
+            </p>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-primary btn-lg" asp-controller="Plants" asp-action="Index">
+                    Go to Plants
+                </a>
+                <a class="btn btn-outline-secondary btn-lg" asp-controller="Plants" asp-action="Create">
+                    Add a Plant
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Plants</h5>
+                    <p class="card-text">Create, edit, and organize your plant list.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Watering</h5>
+                    <p class="card-text">One click to log “Watered today” and keep history.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">History</h5>
+                    <p class="card-text">See the latest watering entries per plant.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
