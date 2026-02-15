@@ -1,0 +1,51 @@
+﻿@model PlantPlanner.Models.Plant
+
+@{
+    ViewData["Title"] = "Create Plant";
+}
+
+<h1>Create Plant</h1>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Type" class="form-label"></label>
+        <input asp-for="Type" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Light" class="form-label"></label>
+        <input asp-for="Light" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="WaterIntervalDays" class="form-label"></label>
+        <input asp-for="WaterIntervalDays" class="form-control" type="number" min="1" max="365" step="1" />
+        <span asp-validation-for="WaterIntervalDays" class="text-danger"></span>
+    </div>
+
+
+    <div class="mb-3">
+        <label asp-for="Location" class="form-label"></label>
+        <input asp-for="Location" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
