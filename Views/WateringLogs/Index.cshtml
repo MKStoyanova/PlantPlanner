@@ -1,0 +1,25 @@
+﻿@model IEnumerable<PlantPlanner.Models.WateringLog>
+
+@{
+    ViewData["Title"] = "Watering History";
+}
+
+<h2>Watering History</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Watered On</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model)
+        {
+            <tr>
+                <td>@log.WateredOn</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="Plants" asp-action="Index" class="btn btn-secondary">Back</a>
