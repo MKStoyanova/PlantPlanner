@@ -1,4 +1,6 @@
-﻿@model IEnumerable<PlantPlanner.Models.Plant>
+﻿@model IEnumerable<PlantPlanner.ViewModels.PlantListItemViewModel>
+
+
 
 @{
     ViewData["Title"] = "Plants";
@@ -24,6 +26,7 @@
             <th>Type</th>
             <th>Light</th>
             <th>Days until it needs water</th>
+            <th>Watering</th>
             <th>Location</th>
             <th>Actions</th>
         </tr>
@@ -36,7 +39,10 @@
                 <td>@item.Type</td>
                 <td>@item.Light</td>
                 <td>@item.WaterIntervalDays</td>
+                <td>@item.WateringMessage</td>
                 <td>@item.Location</td>
+                <td>@item.SoilName</td>
+
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
