@@ -4,9 +4,8 @@
     ViewData["Title"] = "Edit Plant";
 }
 
-<h1>Edit</h1>
+<h1>Edit Plant</h1>
 
-<h4>Plant</h4>
 <hr />
 
 <div class="row">
@@ -45,6 +44,18 @@
             </div>
 
             <div class="mb-3">
+                <label asp-for="SoilId" class="form-label">Soil</label>
+
+                <select asp-for="SoilId"
+                        class="form-select"
+                        asp-items="ViewBag.SoilId">
+                    <option value="">-- Select soil --</option>
+                </select>
+
+                <span asp-validation-for="SoilId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
                 <label asp-for="Light" class="form-label"></label>
                 <input asp-for="Light" class="form-control" />
                 <span asp-validation-for="Light" class="text-danger"></span>
@@ -52,7 +63,7 @@
 
             <div class="mb-3">
                 <label asp-for="WaterIntervalDays" class="form-label"></label>
-                <input asp-for="WaterIntervalDays" class="form-control" />
+                <input asp-for="WaterIntervalDays" class="form-control" type="number" min="1" max="365" step="1" />
                 <span asp-validation-for="WaterIntervalDays" class="text-danger"></span>
             </div>
 
@@ -85,6 +96,7 @@
         const currentType = "@(Model.Type ?? "")";
 
         
+        
         if (currentType && !presets.includes(currentType)) {
             select.value = "Other";
             custom.value = currentType;
@@ -97,11 +109,9 @@
             custom.style.display = isOther ? "block" : "none";
 
             if (isOther) {
-               
                 select.name = "Type__preset";
                 custom.name = "Type";
             } else {
-                
                 select.name = "Type";
                 custom.name = "Type__custom";
                 custom.value = "";

@@ -21,6 +21,10 @@ namespace PlantPlanner.Models
         [Range(1, 365, ErrorMessage = "Please enter a value between 1 and 365 days.")]
         public int WaterIntervalDays { get; set; } = 7;
 
+        public int? SoilId { get; set; }
+        public Soil? Soil { get; set; }
+
+
         [StringLength(60)]
         public string? Location { get; set; }
 

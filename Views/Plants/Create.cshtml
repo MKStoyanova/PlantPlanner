@@ -7,6 +7,7 @@
 <h1>Create Plant</h1>
 
 <form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
         <label asp-for="Name" class="form-label"></label>
@@ -36,10 +37,22 @@
         <span asp-validation-for="Type" class="text-danger"></span>
     </div>
 
+    <div class="mb-3">
+        <label asp-for="SoilId" class="form-label">Soil</label>
+
+        <select asp-for="SoilId"
+                class="form-select"
+                asp-items="ViewBag.SoilId">
+            <option value="">-- Select soil --</option>
+        </select>
+
+        <span asp-validation-for="SoilId" class="text-danger"></span>
+    </div>
 
     <div class="mb-3">
         <label asp-for="Light" class="form-label"></label>
         <input asp-for="Light" class="form-control" />
+        <span asp-validation-for="Light" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
@@ -48,20 +61,20 @@
         <span asp-validation-for="WaterIntervalDays" class="text-danger"></span>
     </div>
 
-
     <div class="mb-3">
         <label asp-for="Location" class="form-label"></label>
         <input asp-for="Location" class="form-control" />
+        <span asp-validation-for="Location" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Notes" class="form-label"></label>
         <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     <a asp-action="Index" class="btn btn-secondary">Back</a>
-
 </form>
 
 @section Scripts {
@@ -76,11 +89,9 @@
             custom.style.display = isOther ? "block" : "none";
 
             if (isOther) {
-               
                 select.name = "Type__preset";
                 custom.name = "Type";
             } else {
-               
                 select.name = "Type";
                 custom.name = "Type__custom";
                 custom.value = "";
@@ -91,5 +102,3 @@
         toggle();
     </script>
 }
-
-
