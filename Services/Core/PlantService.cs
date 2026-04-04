@@ -16,7 +16,9 @@ namespace PlantPlanner.Services.Core
 
         public async Task<IEnumerable<Plant>> GetAllAsync()
         {
-            return await _context.Plants.ToListAsync();
+            return await _context.Plants
+                .Include(p => p.Soil)
+                .ToListAsync();
         }
     }
 }

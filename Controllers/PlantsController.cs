@@ -4,28 +4,30 @@ using Microsoft.EntityFrameworkCore;
 using PlantPlanner.Data;
 using PlantPlanner.Models;
 using PlantPlanner.ViewModels;
+using PlantPlanner.Services.Contracts;
 
 namespace PlantPlanner.Controllers
 {
     public class PlantsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPlantService _plantService;
 
-        public PlantsController(ApplicationDbContext context)
+        public PlantsController(ApplicationDbContext context, IPlantService plantService)
         {
             _context = context;
+            _plantService = plantService;
         }
 
-        
+
         public async Task<IActionResult> Index()
         {
-            
-            var plants = await _context.Plants
-                .Include(p => p.Soil)
-                .OrderBy(p => p.Name)
-                .ToListAsync();
 
-            
+            var plants = (await _plantService.GetAllAsync())
+                .OrderBy(p => p.Name)
+                .ToList();
+
+
             var lastWaterings = await _context.WateringLogs
                 .GroupBy(w => w.PlantId)
                 .Select(g => new
@@ -40,7 +42,7 @@ namespace PlantPlanner.Controllers
 
             var today = DateTime.UtcNow.Date;
 
-            
+
             var result = plants.Select(p =>
             {
                 lastByPlantId.TryGetValue(p.Id, out var last);
@@ -79,8 +81,8 @@ namespace PlantPlanner.Controllers
                     LastWateredOn = last,
                     WateringMessage = message,
 
-                    
-                    
+
+
                     SoilName = p.Soil != null ? p.Soil.Name : null
                 };
             }).ToList();
@@ -88,7 +90,7 @@ namespace PlantPlanner.Controllers
             return View(result);
         }
 
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -102,19 +104,19 @@ namespace PlantPlanner.Controllers
             return View(plant);
         }
 
-        
+
         public IActionResult Create()
         {
             PopulateSoilsDropDownList();
             return View();
         }
 
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Plant plant)
         {
-            
+
             if (plant.SoilId == null)
             {
                 ModelState.AddModelError(nameof(Plant.SoilId), "Please select soil.");
@@ -132,7 +134,7 @@ namespace PlantPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -144,7 +146,7 @@ namespace PlantPlanner.Controllers
             return View(plant);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Plant plant)
@@ -177,7 +179,7 @@ namespace PlantPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -191,7 +193,7 @@ namespace PlantPlanner.Controllers
             return View(plant);
         }
 
-        
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -206,7 +208,7 @@ namespace PlantPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Water(int id)
@@ -227,7 +229,7 @@ namespace PlantPlanner.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         private void PopulateSoilsDropDownList(int? selectedSoilId = null)
         {
             ViewBag.SoilId = new SelectList(
