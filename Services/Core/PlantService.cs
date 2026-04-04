@@ -20,5 +20,12 @@ namespace PlantPlanner.Services.Core
                 .Include(p => p.Soil)
                 .ToListAsync();
         }
+
+        public async Task<Plant?> GetByIdAsync(int id)
+        {
+            return await _context.Plants
+                .Include(p => p.Soil)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
     }
 }

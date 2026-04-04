@@ -93,11 +93,7 @@ namespace PlantPlanner.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null) return NotFound();
-
-            var plant = await _context.Plants
-                .Include(p => p.Soil)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var plant = await _plantService.GetByIdAsync(id.Value);
 
             if (plant == null) return NotFound();
 
