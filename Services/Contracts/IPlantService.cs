@@ -1,0 +1,9 @@
+﻿using PlantPlanner.Models;
+
+namespace PlantPlanner.Services.Contracts
+{
+    public interface IPlantService
+    {
+        Task<IEnumerable<Plant>> GetAllAsync();
+    }
+}
