@@ -20,72 +20,17 @@ namespace PlantPlanner.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm, int? soilId)
         {
+            var result = await _plantService.GetAllForIndexAsync(searchTerm, soilId);
 
-            var plants = (await _plantService.GetAllAsync())
-                .OrderBy(p => p.Name)
-                .ToList();
+            ViewBag.SoilId = new SelectList(
+                _context.Soils.OrderBy(s => s.Name),
+                "Id",
+                "Name",
+                soilId);
 
-
-            var lastWaterings = await _context.WateringLogs
-                .GroupBy(w => w.PlantId)
-                .Select(g => new
-                {
-                    PlantId = g.Key,
-                    LastWateredOn = g.Max(x => x.WateredOn)
-                })
-                .ToListAsync();
-
-            var lastByPlantId = lastWaterings
-                .ToDictionary(x => x.PlantId, x => (DateTime?)x.LastWateredOn);
-
-            var today = DateTime.UtcNow.Date;
-
-
-            var result = plants.Select(p =>
-            {
-                lastByPlantId.TryGetValue(p.Id, out var last);
-
-                string message;
-                if (last == null)
-                {
-                    message = "No watering yet.";
-                }
-                else
-                {
-                    var lastDate = last.Value.Date;
-                    var daysSince = (today - lastDate).Days;
-
-                    var nextWaterDate = lastDate.AddDays(p.WaterIntervalDays);
-                    var daysUntil = (nextWaterDate - today).Days;
-
-                    if (daysUntil <= 0)
-                    {
-                        message = $"Don't forget to water today! It's been {daysSince} days since last watering.";
-                    }
-                    else
-                    {
-                        message = $"It will need water in {daysUntil} days.";
-                    }
-                }
-
-                return new PlantListItemViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Type = p.Type,
-                    Light = p.Light,
-                    WaterIntervalDays = p.WaterIntervalDays,
-                    Location = p.Location,
-                    LastWateredOn = last,
-                    WateringMessage = message,
-
-
-
-                    SoilName = p.Soil != null ? p.Soil.Name : null
-                };
-            }).ToList();
+            ViewBag.SearchTerm = searchTerm;
 
             return View(result);
         }
@@ -93,9 +38,17 @@ namespace PlantPlanner.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var plant = await _plantService.GetByIdAsync(id.Value);
 
-            if (plant == null) return NotFound();
+            if (plant == null)
+            {
+                return NotFound();
+            }
 
             return View(plant);
         }

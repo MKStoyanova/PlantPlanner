@@ -2,6 +2,7 @@
 using PlantPlanner.Data;
 using PlantPlanner.Models;
 using PlantPlanner.Services.Contracts;
+using PlantPlanner.ViewModels;
 
 namespace PlantPlanner.Services.Core
 {
@@ -49,6 +50,109 @@ namespace PlantPlanner.Services.Core
         {
             _context.Plants.Add(plant);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task WaterAsync(int id)
+        {
+            var plant = await _context.Plants.FindAsync(id);
+
+            if (plant == null)
+            {
+                return;
+            }
+
+            var wateringLog = new WateringLog
+            {
+                PlantId = plant.Id,
+                WateredOn = DateTime.UtcNow
+            };
+
+            _context.WateringLogs.Add(wateringLog);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Plant>> GetFilteredAsync(string? searchTerm, int? soilId)
+        {
+            var query = _context.Plants
+                .Include(p => p.Soil)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(p => p.Name.Contains(searchTerm));
+            }
+
+            if (soilId.HasValue)
+            {
+                query = query.Where(p => p.SoilId == soilId);
+            }
+
+            return await query
+                .OrderBy(p => p.Name)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PlantListItemViewModel>> GetAllForIndexAsync(string? searchTerm, int? soilId)
+        {
+            var plants = (await GetFilteredAsync(searchTerm, soilId)).ToList();
+
+            var lastWaterings = await _context.WateringLogs
+                .GroupBy(w => w.PlantId)
+                .Select(g => new
+                {
+                    PlantId = g.Key,
+                    LastWateredOn = g.Max(x => x.WateredOn)
+                })
+                .ToListAsync();
+
+            var lastByPlantId = lastWaterings
+                .ToDictionary(x => x.PlantId, x => (DateTime?)x.LastWateredOn);
+
+            var today = DateTime.UtcNow.Date;
+
+            var result = plants.Select(p =>
+            {
+                lastByPlantId.TryGetValue(p.Id, out var last);
+
+                string message;
+
+                if (last == null)
+                {
+                    message = "No watering yet.";
+                }
+                else
+                {
+                    var lastDate = last.Value.Date;
+                    var daysSince = (today - lastDate).Days;
+
+                    var nextWaterDate = lastDate.AddDays(p.WaterIntervalDays);
+                    var daysUntil = (nextWaterDate - today).Days;
+
+                    if (daysUntil <= 0)
+                    {
+                        message = $"Don't forget to water today! It's been {daysSince} days since last watering.";
+                    }
+                    else
+                    {
+                        message = $"It will need water in {daysUntil} days.";
+                    }
+                }
+
+                return new PlantListItemViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Type = p.Type,
+                    Light = p.Light,
+                    WaterIntervalDays = p.WaterIntervalDays,
+                    Location = p.Location,
+                    SoilName = p.Soil != null ? p.Soil.Name : null,
+                    LastWateredOn = last,
+                    WateringMessage = message
+                };
+            });
+
+            return result;
         }
     }
 }

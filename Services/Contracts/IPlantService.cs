@@ -1,4 +1,5 @@
 ﻿using PlantPlanner.Models;
+using PlantPlanner.ViewModels;
 
 namespace PlantPlanner.Services.Contracts
 {
@@ -13,5 +14,10 @@ namespace PlantPlanner.Services.Contracts
         Task DeleteAsync(int id);
 
         Task CreateAsync(Plant plant);
+
+        Task WaterAsync(int id);
+
+        Task<IEnumerable<Plant>> GetFilteredAsync(string? searchTerm, int? soilId);
+        Task<IEnumerable<PlantListItemViewModel>> GetAllForIndexAsync(string? searchTerm, int? soilId);
     }
 }
