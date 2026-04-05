@@ -9,5 +9,7 @@ namespace PlantPlanner.Services.Contracts
         Task<Plant?> GetByIdAsync(int id);
 
         Task UpdateAsync(Plant plant);
+
+        Task DeleteAsync(int id);
     }
 }

@@ -193,12 +193,7 @@ namespace PlantPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var plant = await _context.Plants.FindAsync(id);
-            if (plant != null)
-            {
-                _context.Plants.Remove(plant);
-                await _context.SaveChangesAsync();
-            }
+            await _plantService.DeleteAsync(id);
 
             return RedirectToAction(nameof(Index));
         }

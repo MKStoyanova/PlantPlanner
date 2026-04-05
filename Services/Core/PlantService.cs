@@ -33,5 +33,16 @@ namespace PlantPlanner.Services.Core
             _context.Update(plant);
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var plant = await _context.Plants.FindAsync(id);
+
+            if (plant != null)
+            {
+                _context.Plants.Remove(plant);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
