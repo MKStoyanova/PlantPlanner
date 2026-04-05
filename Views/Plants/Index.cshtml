@@ -15,9 +15,32 @@
     </div>
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add plant</a>
-</p>
+
+
+<a asp-action="Create" class="btn btn-primary">Add plant</a>
+
+<form asp-action="Index" method="get" class="row g-2 mb-3 mt-2">
+    <div class="col-md-4">
+        <input type="text"
+               name="searchTerm"
+               value="@ViewBag.SearchTerm"
+               class="form-control"
+               placeholder="Search by plant name" />
+    </div>
+
+    <div class="col-md-4">
+        <select name="soilId" class="form-select" asp-items="ViewBag.SoilId">
+            <option value="">-- Filter by soil --</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a asp-action="Index" class="btn btn-secondary">Clear</a>
+    </div>
+</form>
+
+<table class="table">
 
 <table class="table">
     <thead>
