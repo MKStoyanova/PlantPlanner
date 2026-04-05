@@ -162,8 +162,7 @@ namespace PlantPlanner.Controllers
 
             try
             {
-                _context.Update(plant);
-                await _context.SaveChangesAsync();
+                await _plantService.UpdateAsync(plant);
             }
             catch (DbUpdateConcurrencyException)
             {

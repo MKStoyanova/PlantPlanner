@@ -7,5 +7,7 @@ namespace PlantPlanner.Services.Contracts
         Task<IEnumerable<Plant>> GetAllAsync();
        
         Task<Plant?> GetByIdAsync(int id);
+
+        Task UpdateAsync(Plant plant);
     }
 }

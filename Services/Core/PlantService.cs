@@ -27,5 +27,11 @@ namespace PlantPlanner.Services.Core
                 .Include(p => p.Soil)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
+
+        public async Task UpdateAsync(Plant plant)
+        {
+            _context.Update(plant);
+            await _context.SaveChangesAsync();
+        }
     }
 }
