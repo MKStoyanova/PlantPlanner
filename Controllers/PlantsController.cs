@@ -124,8 +124,7 @@ namespace PlantPlanner.Controllers
                 return View(plant);
             }
 
-            _context.Add(plant);
-            await _context.SaveChangesAsync();
+            await _plantService.CreateAsync(plant);
 
             return RedirectToAction(nameof(Index));
         }

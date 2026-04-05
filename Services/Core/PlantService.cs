@@ -44,5 +44,11 @@ namespace PlantPlanner.Services.Core
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task CreateAsync(Plant plant)
+        {
+            _context.Plants.Add(plant);
+            await _context.SaveChangesAsync();
+        }
     }
 }

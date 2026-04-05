@@ -11,5 +11,7 @@ namespace PlantPlanner.Services.Contracts
         Task UpdateAsync(Plant plant);
 
         Task DeleteAsync(int id);
+
+        Task CreateAsync(Plant plant);
     }
 }
