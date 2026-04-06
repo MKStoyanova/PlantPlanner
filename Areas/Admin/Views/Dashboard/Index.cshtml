@@ -1,17 +1,33 @@
-﻿@{
+﻿@model PlantPlanner.ViewModels.AdminDashboardViewModel
+
+@{
     ViewData["Title"] = "Admin Dashboard";
 }
 
 <div class="container py-4">
     <h1>Admin Dashboard</h1>
-    <p>Only administrators can access this area.</p>
+    <p class="text-muted">Only administrators can access this page.</p>
 
-    <div class="card mt-3">
-        <div class="card-body">
-            <h5 class="card-title">Administration Panel</h5>
-            <p class="card-text">
-                This is the admin area of PlantPlanner.
-            </p>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h4>Total Plants</h4>
+                <p class="fs-3 fw-bold">@Model.PlantsCount</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h4>Total Reminders</h4>
+                <p class="fs-3 fw-bold">@Model.RemindersCount</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h4>Total Users</h4>
+                <p class="fs-3 fw-bold">@Model.UsersCount</p>
+            </div>
         </div>
     </div>
 </div>
