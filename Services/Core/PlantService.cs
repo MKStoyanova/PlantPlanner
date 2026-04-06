@@ -138,6 +138,7 @@ namespace PlantPlanner.Services.Core
                     }
                 }
 
+                var feedback = GetPlantCareFeedback(p.Type, p.Soil?.Name, p.WaterIntervalDays);
                 return new PlantListItemViewModel
                 {
                     Id = p.Id,
@@ -148,7 +149,11 @@ namespace PlantPlanner.Services.Core
                     Location = p.Location,
                     SoilName = p.Soil != null ? p.Soil.Name : null,
                     LastWateredOn = last,
-                    WateringMessage = message
+                    WateringMessage = message,
+                    SoilWarning = feedback.SoilWarning,
+                    WaterWarning = feedback.WaterWarning,
+                    SuccessMessage = feedback.SuccessMessage
+
                 };
             });
 
@@ -167,6 +172,88 @@ namespace PlantPlanner.Services.Core
                 .ToList();
 
             return (pagedPlants, totalCount);
+        }
+
+        private (string? SoilWarning, string? WaterWarning, string? SuccessMessage) GetPlantCareFeedback(
+    string? type,
+    string? soilName,
+    int waterIntervalDays)
+        {
+            if (string.IsNullOrWhiteSpace(type))
+            {
+                return (null, null, null);
+            }
+
+            string? expectedSoil = null;
+            int minDays = 0;
+            int maxDays = 0;
+
+            switch (type)
+            {
+                case "Orchid":
+                case "Orchids":
+                    expectedSoil = "For orchids";
+                    minDays = 5;
+                    maxDays = 10;
+                    break;
+
+                case "Tropical":
+                    expectedSoil = "Standard";
+                    minDays = 4;
+                    maxDays = 8;
+                    break;
+
+                case "Carnivorous":
+                case "Carnivore":
+                    expectedSoil = "For carnivore plants";
+                    minDays = 2;
+                    maxDays = 5;
+                    break;
+
+                case "Succulent":
+                case "Cactus":
+                case "Succulent/Cacti":
+                    expectedSoil = "For cacti/succulents";
+                    minDays = 10;
+                    maxDays = 20;
+                    break;
+
+                case "Flowering":
+                    expectedSoil = "For flowering";
+                    minDays = 3;
+                    maxDays = 7;
+                    break;
+
+                case "Air Plants":
+                    expectedSoil = "Standard";
+                    minDays = 2;
+                    maxDays = 4;
+                    break;
+
+                default:
+                    return (null, null, null);
+            }
+
+            string? soilWarning = null;
+            string? waterWarning = null;
+            string? successMessage = null;
+
+            if (!string.Equals(soilName, expectedSoil, StringComparison.OrdinalIgnoreCase))
+            {
+                soilWarning = "Choose the correct soil and repot the plant.";
+            }
+
+            if (waterIntervalDays < minDays || waterIntervalDays > maxDays)
+            {
+                waterWarning = "The watering interval may not be suitable for this plant type.";
+            }
+
+            if (soilWarning == null && waterWarning == null)
+            {
+                successMessage = "That’s one thriving plant!";
+            }
+
+            return (soilWarning, waterWarning, successMessage);
         }
     }
 }

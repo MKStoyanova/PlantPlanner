@@ -63,7 +63,30 @@
                 <td>@item.Type</td>
                 <td>@item.Light</td>
                 <td>@item.WaterIntervalDays</td>
-                <td>@item.WateringMessage</td>
+                    <td>
+                        <div>@item.WateringMessage</div>
+
+                        @if (!string.IsNullOrWhiteSpace(item.SoilWarning))
+                        {
+                            <div class="text-danger small mt-1">
+                                @item.SoilWarning
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(item.WaterWarning))
+                        {
+                            <div class="text-warning small mt-1">
+                                @item.WaterWarning
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(item.SuccessMessage))
+                        {
+                            <div class="text-success fw-bold mt-1">
+                                @item.SuccessMessage
+                            </div>
+                        }
+                    </td>
                 <td>@item.Location</td>
                 <td>@item.SoilName</td>
 

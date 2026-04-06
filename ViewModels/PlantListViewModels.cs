@@ -14,5 +14,9 @@
 
         public string? SoilName { get; set; }
 
+        public string? SoilWarning { get; set; }
+        public string? WaterWarning { get; set; }
+        public string? SuccessMessage { get; set; }
+
     }
 }
