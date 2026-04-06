@@ -64,7 +64,7 @@ namespace PlantPlanner.Services.Core
             var wateringLog = new WateringLog
             {
                 PlantId = plant.Id,
-                WateredOn = DateTime.UtcNow
+                WateredOn = DateTime.Now
             };
 
             _context.WateringLogs.Add(wateringLog);
