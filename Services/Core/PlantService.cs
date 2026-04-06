@@ -154,5 +154,19 @@ namespace PlantPlanner.Services.Core
 
             return result;
         }
+
+        public async Task<(IEnumerable<PlantListItemViewModel> Plants, int TotalCount)> GetPagedForIndexAsync(string? searchTerm, int? soilId, int page, int pageSize)
+        {
+            var allPlants = (await GetAllForIndexAsync(searchTerm, soilId)).ToList();
+
+            var totalCount = allPlants.Count;
+
+            var pagedPlants = allPlants
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return (pagedPlants, totalCount);
+        }
     }
 }

@@ -91,3 +91,51 @@
         }
     </tbody>
 </table>
+
+    <div class="mt-3">
+        @if ((int)ViewBag.TotalPages > 1)
+        {
+            <nav>
+                <ul class="pagination">
+                    @if ((int)ViewBag.CurrentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-searchTerm="@ViewBag.SearchTerm"
+                               asp-route-soilId="@ViewBag.SelectedSoilId"
+                               asp-route-page="@((int)ViewBag.CurrentPage - 1)">
+                                Previous
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == (int)ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-searchTerm="@ViewBag.SearchTerm"
+                               asp-route-soilId="@ViewBag.SelectedSoilId"
+                               asp-route-page="@i">
+                                @i
+                            </a>
+                        </li>
+                    }
+
+                    @if ((int)ViewBag.CurrentPage < (int)ViewBag.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               asp-action="Index"
+                               asp-route-searchTerm="@ViewBag.SearchTerm"
+                               asp-route-soilId="@ViewBag.SelectedSoilId"
+                               asp-route-page="@((int)ViewBag.CurrentPage + 1)">
+                                Next
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+    </div>

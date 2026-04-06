@@ -18,6 +18,9 @@ namespace PlantPlanner.Services.Contracts
         Task WaterAsync(int id);
 
         Task<IEnumerable<Plant>> GetFilteredAsync(string? searchTerm, int? soilId);
+       
         Task<IEnumerable<PlantListItemViewModel>> GetAllForIndexAsync(string? searchTerm, int? soilId);
+
+        Task<(IEnumerable<PlantListItemViewModel> Plants, int TotalCount)> GetPagedForIndexAsync(string? searchTerm, int? soilId, int page, int pageSize);
     }
 }

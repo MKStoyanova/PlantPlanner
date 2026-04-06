@@ -23,9 +23,14 @@ namespace PlantPlanner.Controllers
         }
 
 
-        public async Task<IActionResult> Index(string? searchTerm, int? soilId)
+        public async Task<IActionResult> Index(string? searchTerm, int? soilId, int page = 1)
         {
-            var result = await _plantService.GetAllForIndexAsync(searchTerm, soilId);
+            int pageSize = 5;
+
+            var pagedResult = await _plantService.GetPagedForIndexAsync(searchTerm, soilId, page, pageSize);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)pagedResult.TotalCount / pageSize);
 
             ViewBag.SoilId = new SelectList(
                 _context.Soils.OrderBy(s => s.Name),
@@ -34,8 +39,9 @@ namespace PlantPlanner.Controllers
                 soilId);
 
             ViewBag.SearchTerm = searchTerm;
+            ViewBag.SelectedSoilId = soilId;
 
-            return View(result);
+            return View(pagedResult.Plants);
         }
 
 
