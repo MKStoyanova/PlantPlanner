@@ -1,0 +1,37 @@
+﻿@model IEnumerable<PlantPlanner.Models.Reminder>
+
+@{
+    ViewData["Title"] = "Reminders";
+}
+
+<h1>Reminders</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add Reminder</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Plant</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reminder in Model)
+        {
+            <tr>
+                <td>@reminder.Plant?.Name</td>
+                <td>@reminder.Message</td>
+                <td>@reminder.Date.ToString("dd.MM.yyyy HH:mm")</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace PlantPlanner.Models
 {
@@ -13,8 +14,10 @@ namespace PlantPlanner.Models
         [Required]
         public DateTime Date { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a plant.")]
         public int PlantId { get; set; }
 
-        public Plant Plant { get; set; } = null!;
+        [ValidateNever]
+        public Plant? Plant { get; set; }
     }
 }
