@@ -1,0 +1,30 @@
+﻿@model IEnumerable<PlantPlanner.Models.CareTip>
+
+@{
+    ViewData["Title"] = "Care Tips";
+}
+
+<div class="container py-4">
+    <h1>Care Tips</h1>
+    <p>Helpful guidance for watering, soil and light.</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tip in Model)
+            {
+                <tr>
+                    <td>@tip.Category</td>
+                    <td>@tip.Title</td>
+                    <td>@tip.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

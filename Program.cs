@@ -33,6 +33,8 @@ using (var scope = app.Services.CreateScope())
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
 
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+
     string[] roles = { "Administrator", "User" };
 
     foreach (var role in roles)
@@ -99,7 +101,35 @@ using (var scope = app.Services.CreateScope())
             }
         }
     }
+
+    if (!dbContext.CareTips.Any())
+    {
+        dbContext.CareTips.AddRange(
+            new PlantPlanner.Models.CareTip
+            {
+                Category = "Watering",
+                Title = "Avoid overwatering",
+                Description = "Always match watering frequency to the plant type and soil conditions."
+            },
+            new PlantPlanner.Models.CareTip
+            {
+                Category = "Soil",
+                Title = "Use suitable soil",
+                Description = "Choose the correct soil mix for the plant type to support healthy roots."
+            },
+            new PlantPlanner.Models.CareTip
+            {
+                Category = "Light",
+                Title = "Match the light needs",
+                Description = "Place plants according to their light requirements to avoid stress and weak growth."
+            });
+
+        await dbContext.SaveChangesAsync();
+    }
 }
+
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
