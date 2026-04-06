@@ -48,8 +48,8 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-    string adminEmail = "admin@plantplanner.com";
-    string adminPassword = "Admin123<";
+    string adminEmail = "superadmin@plantplanner.com";
+    string adminPassword = "Admin123!";
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
@@ -117,6 +117,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
