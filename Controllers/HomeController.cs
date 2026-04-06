@@ -33,5 +33,17 @@ namespace PlantPlanner.Controllers
         {
             return View();
         }
+
+        [Route("Home/NotFound")]
+        public IActionResult NotFoundPage()
+        {
+            return View("~/Views/Shared/NotFound.cshtml");
+        }
+
+        [Route("Home/ServerError")]
+        public IActionResult ServerError()
+        {
+            return View("~/Views/Shared/ServerError.cshtml");
+        }
     }
 }
