@@ -30,6 +30,8 @@ namespace PlantPlanner.Data
             );
         }
 
+        public DbSet<Reminder> Reminders { get; set; }
+
 
     }
 }

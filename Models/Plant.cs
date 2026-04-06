@@ -24,6 +24,8 @@ namespace PlantPlanner.Models
         public int? SoilId { get; set; }
         public Soil? Soil { get; set; }
 
+        public ICollection<Reminder> Reminders { get; set; } = new List<Reminder>();
+
 
         [StringLength(60)]
         public string? Location { get; set; }
