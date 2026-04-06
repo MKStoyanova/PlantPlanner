@@ -34,5 +34,7 @@ namespace PlantPlanner.Models
         public string? Notes { get; set; }
 
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+
+        public string OwnerId { get; set; } = null!;
     }
 }

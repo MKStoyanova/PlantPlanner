@@ -71,10 +71,11 @@ namespace PlantPlanner.Services.Core
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Plant>> GetFilteredAsync(string? searchTerm, int? soilId)
+        public async Task<IEnumerable<Plant>> GetFilteredAsync(string ownerId, string? searchTerm, int? soilId)
         {
             var query = _context.Plants
                 .Include(p => p.Soil)
+                .Where(p => p.OwnerId == ownerId)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
@@ -92,9 +93,9 @@ namespace PlantPlanner.Services.Core
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<PlantListItemViewModel>> GetAllForIndexAsync(string? searchTerm, int? soilId)
+        public async Task<IEnumerable<PlantListItemViewModel>> GetAllForIndexAsync(string ownerId, string? searchTerm, int? soilId)
         {
-            var plants = (await GetFilteredAsync(searchTerm, soilId)).ToList();
+            var plants = (await GetFilteredAsync(ownerId, searchTerm, soilId)).ToList();
 
             var lastWaterings = await _context.WateringLogs
                 .GroupBy(w => w.PlantId)
@@ -160,9 +161,9 @@ namespace PlantPlanner.Services.Core
             return result;
         }
 
-        public async Task<(IEnumerable<PlantListItemViewModel> Plants, int TotalCount)> GetPagedForIndexAsync(string? searchTerm, int? soilId, int page, int pageSize)
+        public async Task<(IEnumerable<PlantListItemViewModel> Plants, int TotalCount)> GetPagedForIndexAsync(string ownerId, string? searchTerm, int? soilId, int page, int pageSize)
         {
-            var allPlants = (await GetAllForIndexAsync(searchTerm, soilId)).ToList();
+            var allPlants = (await GetAllForIndexAsync(ownerId, searchTerm, soilId)).ToList();
 
             var totalCount = allPlants.Count;
 

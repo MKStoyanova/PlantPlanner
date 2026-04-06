@@ -19,5 +19,7 @@ namespace PlantPlanner.Models
 
         [ValidateNever]
         public Plant? Plant { get; set; }
+
+        public string OwnerId { get; set; } = null!;
     }
 }

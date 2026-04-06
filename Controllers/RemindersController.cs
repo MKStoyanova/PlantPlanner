@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlantPlanner.Data;
 using PlantPlanner.Models;
+using System.Security.Claims;
 
 namespace PlantPlanner.Controllers
 {
@@ -19,8 +20,11 @@ namespace PlantPlanner.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
             var reminders = await _context.Reminders
                 .Include(r => r.Plant)
+                .Where(r => r.OwnerId == ownerId)
                 .OrderBy(r => r.Date)
                 .ToListAsync();
 
@@ -29,7 +33,15 @@ namespace PlantPlanner.Controllers
 
         public IActionResult Create()
         {
-            ViewBag.PlantId = new SelectList(_context.Plants.OrderBy(p => p.Name), "Id", "Name");
+            var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+            ViewBag.PlantId = new SelectList(
+                _context.Plants
+                    .Where(p => p.OwnerId == ownerId)
+                    .OrderBy(p => p.Name),
+                "Id",
+                "Name");
+
             return View();
         }
 
@@ -37,18 +49,38 @@ namespace PlantPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Reminder reminder)
         {
-           
-            ModelState.Remove("Plant");
+            var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-            if (ModelState.IsValid)
+            ModelState.Remove("Plant");
+            ModelState.Remove("OwnerId");
+
+            if (!ModelState.IsValid)
             {
-                _context.Add(reminder);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ViewBag.PlantId = new SelectList(
+                    _context.Plants
+                        .Where(p => p.OwnerId == ownerId)
+                        .OrderBy(p => p.Name),
+                    "Id",
+                    "Name",
+                    reminder.PlantId);
+
+                return View(reminder);
             }
 
-            ViewBag.PlantId = new SelectList(_context.Plants, "Id", "Name", reminder.PlantId);
-            return View(reminder);
+            reminder.OwnerId = ownerId;
+
+            var plantBelongsToUser = await _context.Plants
+            .AnyAsync(p => p.Id == reminder.PlantId && p.OwnerId == ownerId);
+
+            if (!plantBelongsToUser)
+            {
+                return Forbid();
+            }
+
+            _context.Reminders.Add(reminder);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

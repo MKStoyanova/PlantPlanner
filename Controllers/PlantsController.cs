@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PlantPlanner.Data;
 using PlantPlanner.Models;
-using PlantPlanner.ViewModels;
 using PlantPlanner.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
+using PlantPlanner.ViewModels;
+using System.Security.Claims;
 
 namespace PlantPlanner.Controllers
 {
@@ -26,8 +27,10 @@ namespace PlantPlanner.Controllers
         public async Task<IActionResult> Index(string? searchTerm, int? soilId, int page = 1)
         {
             int pageSize = 5;
+            
+            var ownerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-            var pagedResult = await _plantService.GetPagedForIndexAsync(searchTerm, soilId, page, pageSize);
+            var pagedResult = await _plantService.GetPagedForIndexAsync(ownerId, searchTerm, soilId, page, pageSize);
 
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = (int)Math.Ceiling((double)pagedResult.TotalCount / pageSize);
@@ -74,11 +77,7 @@ namespace PlantPlanner.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Plant plant)
         {
-
-            if (plant.SoilId == null)
-            {
-                ModelState.AddModelError(nameof(Plant.SoilId), "Please select soil.");
-            }
+            ModelState.Remove("OwnerId");
 
             if (!ModelState.IsValid)
             {
@@ -86,11 +85,12 @@ namespace PlantPlanner.Controllers
                 return View(plant);
             }
 
+            plant.OwnerId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
             await _plantService.CreateAsync(plant);
 
             return RedirectToAction(nameof(Index));
         }
-
 
         public async Task<IActionResult> Edit(int? id)
         {
