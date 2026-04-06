@@ -5,9 +5,12 @@ using PlantPlanner.Data;
 using PlantPlanner.Models;
 using PlantPlanner.ViewModels;
 using PlantPlanner.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PlantPlanner.Controllers
 {
+    [Authorize]
+  
     public class PlantsController : Controller
     {
         private readonly ApplicationDbContext _context;
