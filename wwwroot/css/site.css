@@ -72,5 +72,266 @@ h1, h2, h3 {
 }
 
 
+.home-hero {
+    background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.88));
+    min-height: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+
+.leaf-vine {
+    position: absolute;
+    top: 0;
+    width: 70px;
+    height: 100%;
+    pointer-events: none;
+}
+
+.left-vine {
+    left: 10px;
+}
+
+.right-vine {
+    right: 10px;
+}
+
+.leaf-vine::before {
+    content: "";
+    position: absolute;
+    left: 32px;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: rgba(47, 79, 63, 0.35);
+    border-radius: 10px;
+}
+
+.leaf {
+    position: absolute;
+    width: 26px;
+    height: 16px;
+    background-color: #7fbf8f;
+    border-radius: 100% 0 100% 0;
+    box-shadow: inset 0 0 0 1px rgba(31, 61, 43, 0.12);
+}
+
+.left-vine .leaf-1 {
+    top: 35px;
+    left: 8px;
+    transform: rotate(-35deg);
+}
+
+.left-vine .leaf-2 {
+    top: 110px;
+    left: 35px;
+    transform: rotate(45deg);
+}
+
+.left-vine .leaf-3 {
+    top: 190px;
+    left: 10px;
+    transform: rotate(-30deg);
+}
+
+.left-vine .leaf-4 {
+    top: 270px;
+    left: 36px;
+    transform: rotate(40deg);
+}
+
+.right-vine .leaf-1 {
+    top: 45px;
+    right: 10px;
+    transform: rotate(35deg);
+}
+
+.right-vine .leaf-2 {
+    top: 125px;
+    right: 36px;
+    transform: rotate(-45deg);
+}
+
+.right-vine .leaf-3 {
+    top: 205px;
+    right: 12px;
+    transform: rotate(30deg);
+}
+
+.right-vine .leaf-4 {
+    top: 285px;
+    right: 38px;
+    transform: rotate(-35deg);
+}
+
+
+.plant-showcase-card,
+.info-soft-card,
+.caretip-card {
+    background: rgba(255, 255, 255, 0.86);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+}
+
+    .plant-showcase-card h3,
+    .caretip-card h4,
+    .info-soft-card h4 {
+        color: #1F3D2B;
+    }
+
+
+.plant-illustration {
+    position: relative;
+    height: 180px;
+    margin: 0 auto;
+}
+
+.pot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95px;
+    height: 65px;
+    background: #b9855b;
+    border-radius: 0 0 18px 18px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.stem {
+    position: absolute;
+    bottom: 58px;
+    width: 6px;
+    background: #426b4a;
+    border-radius: 10px;
+}
+
+.stem-left {
+    left: 48%;
+    bottom: 58px; 
+    height: 60px;
+    transform: rotate(-6deg);
+}
+
+.stem-right {
+    left: 52%;
+    bottom: 58px; 
+    height: 65px;
+    transform: rotate(6deg);
+}
+
+.leaf-shape {
+    position: absolute;
+    width: 58px;
+    height: 28px;
+    background: #76b88a;
+    border-radius: 100% 0 100% 0;
+}
+
+.leaf-a {
+    bottom: 95px;
+    left: 40%;
+    transform: rotate(-25deg);
+}
+
+.leaf-b {
+    bottom: 105px;
+    left: 52%;
+    transform: rotate(25deg);
+}
+
+.leaf-c {
+    bottom: 80px;
+    left: 38%;
+    transform: rotate(-45deg);
+}
+
+.leaf-d {
+    bottom: 85px;
+    left: 54%;
+    transform: rotate(45deg);
+}
+
+
+.cactus-main,
+.cactus-left,
+.cactus-right {
+    position: absolute;
+    background: #6aac74;
+    border-radius: 30px;
+}
+
+.cactus-main {
+    width: 54px;
+    height: 105px;
+    left: 50%;
+    bottom: 52px;
+    transform: translateX(-50%);
+}
+
+.cactus-left {
+    width: 28px;
+    height: 60px;
+    left: 38%;
+    bottom: 68px;
+}
+
+.cactus-right {
+    width: 28px;
+    height: 60px;
+    left: 56%;
+    bottom: 74px;
+}
+
+
+.caretip-icon {
+    font-size: 2rem;
+}
+
+.mini-plant-drawing {
+    position: relative;
+    height: 90px;
+    margin-top: 10px;
+}
+
+.mini-pot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 36px;
+    background: #bf8961;
+    border-radius: 0 0 12px 12px;
+
+}
+
+.mini-leaf {
+    position: absolute;
+    width: 34px;
+    height: 18px;
+    background: #80be90;
+    border-radius: 100% 0 100% 0;
+}
+
+.mini-leaf-1 {
+    bottom: 42px;
+    left: 38%;
+    transform: rotate(-35deg);
+}
+
+.mini-leaf-2 {
+    bottom: 50px;
+    left: 50%;
+    transform: rotate(25deg);
+}
+
+.mini-leaf-3 {
+    bottom: 62px;
+    left: 44%;
+    transform: rotate(-5deg);
+}
+
+
 
 
