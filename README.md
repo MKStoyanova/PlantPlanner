@@ -6,6 +6,31 @@ It allows tracking watering schedules, managing plant data, and receiving helpfu
 ---
 
 ## Features
+## 🎥 Demo
+
+### User Flow
+- Register a new account
+- Login
+- Create a plant
+- Add a reminder
+- View plant details and care feedback
+
+### Per-User Behavior
+- Each user sees only their own plants and reminders
+
+### Admin Features
+- Admin has access to a dashboard
+- Can view system statistics (plants, reminders, users)
+
+### Additional Pages
+- Care Tips page
+- Light Tips page
+
+### Technical Features
+- Pagination
+- Filtering and search
+- Custom error pages (404 / 500)
+- Unit tests for service logic
 
 ### 🔐 Authentication & Roles
 - User registration and login (ASP.NET Core Identity)
